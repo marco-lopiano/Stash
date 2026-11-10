@@ -1,0 +1,102 @@
+:root {
+  --cell: 140px;
+  --gap: 14px;
+  --bg: #f6f6f4;
+  --tile: #e6e6e2;
+  --ink: #1b1b1a;
+  --muted: #85857f;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #151515; --tile: #242423; --ink: #ececea; --muted: #77776f; }
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+header { display: flex; justify-content: flex-end; padding: 16px 28px 0; }
+#zoom { width: 110px; accent-color: var(--muted); }
+
+#pinned {
+  display: flex; gap: var(--gap); overflow-x: auto;
+  padding: 14px 28px 10px; margin-bottom: 6px;
+  border-bottom: 1px solid var(--tile);
+}
+#pinned .tile { flex: 0 0 var(--cell); height: var(--cell); }
+
+#grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, var(--cell));
+  grid-auto-rows: var(--cell);
+  gap: var(--gap);
+  padding: 20px 28px 40px;
+}
+
+.tile {
+  position: relative; display: block; overflow: hidden;
+  border-radius: 16px; background: var(--tile) center / cover no-repeat;
+  color: inherit; text-decoration: none; transition: transform .15s ease;
+}
+.tile:hover, .tile:focus-visible { transform: scale(1.03); outline: none; }
+.tile:focus-visible { box-shadow: 0 0 0 2px var(--ink); }
+.tile .initial {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font-size: calc(var(--cell) * .4); font-weight: 600; color: var(--muted);
+}
+.tile .label {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 22px 12px 10px;
+  color: #fff; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  background: linear-gradient(transparent, rgba(0,0,0,.55));
+}
+.tile.noimg .label { background: none; color: var(--ink); }
+
+.add {
+  border: 2px dashed var(--tile); background: none; border-radius: 16px;
+  color: var(--muted); font-size: 32px; cursor: pointer;
+}
+.add:hover, .add:focus-visible { color: var(--ink); border-color: var(--muted); outline: none; }
+
+#menu {
+  position: fixed; z-index: 10; min-width: 150px; padding: 6px;
+  background: var(--bg); border: 1px solid var(--tile); border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25); display: grid;
+}
+#menu button {
+  text-align: left; padding: 8px 12px; border: 0; border-radius: 8px;
+  background: none; font: inherit; color: inherit; cursor: pointer;
+}
+#menu button:hover, #menu button:focus-visible { background: var(--tile); outline: none; }
+#menu .danger:hover { color: #d33; }
+
+dialog {
+  border: 0; border-radius: 16px; padding: 20px; width: min(360px, 92vw);
+  background: var(--bg); color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,.35);
+}
+dialog::backdrop { background: rgba(0,0,0,.4); }
+form { display: grid; gap: 12px; }
+input[type=text], input:not([type]) {
+  width: 100%; padding: 10px 12px; font: inherit; color: inherit;
+  background: var(--tile); border: 2px solid transparent; border-radius: 10px;
+}
+input:focus { outline: none; border-color: var(--muted); }
+.row { display: flex; gap: 8px; align-items: center; }
+.row.end { justify-content: flex-end; }
+button, .file {
+  font: inherit; color: inherit; padding: 8px 12px; border-radius: 10px;
+  background: var(--tile); border: 2px solid transparent; cursor: pointer;
+}
+button.quiet { background: none; color: var(--muted); }
+button.quiet:hover { color: var(--ink); }
+button.primary { background: var(--ink); color: var(--bg); }
+button:focus-visible, .file:focus-within { outline: 2px solid var(--muted); outline-offset: 2px; }
+
+.tile { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.tile.dragging { opacity: .25; }
+.ghost {
+  position: fixed; z-index: 20; margin: 0; pointer-events: none;
+  transform: scale(1.06); opacity: .95; transition: none;
+  box-shadow: 0 14px 40px rgba(0,0,0,.35);
+}
+body.dragging, body.dragging .tile { cursor: grabbing; user-select: none; }
