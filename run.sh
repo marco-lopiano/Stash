@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Navigate to project directory (in case it's run from elsewhere)
 cd "$(dirname "$0")"
 
 echo "Checking dependencies..."
