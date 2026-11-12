@@ -143,11 +143,24 @@ function moveGhost(x, y) {
 
 // Dragged icon takes the slot of whichever icon the pointer is over.
 function reorder(x, y) {
-  const over = document.elementFromPoint(x, y)?.closest('.tile');
-  const other = over?._item;
-  if (!other || other === drag.it) return;
-  items.splice(items.indexOf(drag.it), 1);
-  items.splice(items.indexOf(other), 0, drag.it);
+  const el = document.elementFromPoint(x, y);
+  const other = el?.closest('.tile')?._item;
+
+  if (!other) {
+    if (drag.it.pinned && el?.closest('#grid')) {
+      items.splice(items.indexOf(drag.it), 1);
+      items.push(drag.it);
+      drag.it.pinned = false;
+      render();
+    }
+    return;
+  }
+
+  if (other === drag.it) return;
+  const from = items.indexOf(drag.it);
+  const to = items.indexOf(other);
+  items.splice(from, 1);
+  items.splice(to, 0, drag.it);
   drag.it.pinned = !!other.pinned;
   render();
 }
