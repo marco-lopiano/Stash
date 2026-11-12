@@ -11,17 +11,17 @@
   <section id="pinned" hidden></section>
   <main id="grid"></main>
 
-  <div id="menu" role="menu" hidden>
-    <button role="menuitem" data-act="edit">Edit</button>
-    <button role="menuitem" data-act="pin"></button>
-    <button role="menuitem" data-act="delete" class="danger">Delete</button>
-  </div>
+  <div id="menu" role="menu" hidden></div>
 
   <dialog id="dlg">
     <form id="form" method="dialog">
+      <div class="seg" id="type">
+        <button type="button" data-type="link" class="on">Link</button>
+        <button type="button" data-type="group">Group</button>
+      </div>
       <input id="name" placeholder="Name" autocomplete="off">
       <input id="url" placeholder="Link (example.com)" autocomplete="off" required>
-      <div class="row">
+      <div class="row" id="imgrow">
         <label class="file">Image<input id="file" type="file" accept="image/*" hidden></label>
         <button type="button" id="clear" class="quiet">Remove image</button>
       </div>
@@ -31,6 +31,16 @@
       </div>
     </form>
   </dialog>
+
+  <div id="folder" hidden>
+    <div id="folder-panel">
+      <div id="folder-head">
+        <h2 id="folder-title"></h2>
+        <button id="folder-close" class="quiet">Done</button>
+      </div>
+      <div id="folder-grid"></div>
+    </div>
+  </div>
 
   <script type="module" src="/src/main.js"></script>
 </body>

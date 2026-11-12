@@ -58,10 +58,48 @@ header { display: flex; justify-content: flex-end; padding: 16px 28px 0; }
 }
 .add:hover, .add:focus-visible { color: var(--ink); border-color: var(--muted); outline: none; }
 
+/* ---- Group folders ---- */
+.tile.group { background: var(--tile); cursor: pointer; }
+.tile.group.drop { box-shadow: 0 0 0 3px var(--ink); transform: scale(1.05); }
+.folder-preview {
+  position: absolute; left: 14%; right: 14%; top: 13%; bottom: 30%;
+  display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+  gap: 8%;
+}
+.mini {
+  border-radius: 24%; overflow: hidden;
+  background: var(--bg) center / cover no-repeat;
+  display: grid; place-items: center;
+  font-size: calc(var(--cell) * .14); font-weight: 600; color: var(--muted);
+}
+.mini.mini-folder { font-size: calc(var(--cell) * .18); background: none; }
+.mini.more { background: none; color: var(--muted); font-size: calc(var(--cell) * .24); }
+
+#folder {
+  position: fixed; inset: 0; z-index: 30; padding: 24px;
+  display: grid; place-items: center; background: rgba(0,0,0,.45);
+}
+#folder-panel {
+  width: min(680px, 92vw); max-height: 86vh; overflow: auto; padding: 20px 24px 24px;
+  background: var(--bg); border-radius: 24px; box-shadow: 0 30px 80px rgba(0,0,0,.4);
+}
+#folder-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+#folder-title { margin: 0; font-size: 20px; font-weight: 600; }
+#folder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, var(--cell));
+  grid-auto-rows: var(--cell);
+  gap: var(--gap);
+}
+
 #menu {
-  position: fixed; z-index: 10; min-width: 150px; padding: 6px;
+  position: fixed; z-index: 40; min-width: 150px; max-width: 240px; padding: 6px;
+  max-height: 70vh; overflow: auto;
   background: var(--bg); border: 1px solid var(--tile); border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0,0,0,.25); display: grid;
+}
+#menu button {
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 #menu button {
   text-align: left; padding: 8px 12px; border: 0; border-radius: 8px;
@@ -83,6 +121,12 @@ input[type=text], input:not([type]) {
 input:focus { outline: none; border-color: var(--muted); }
 .row { display: flex; gap: 8px; align-items: center; }
 .row.end { justify-content: flex-end; }
+.seg { display: flex; gap: 4px; padding: 4px; background: var(--tile); border-radius: 10px; }
+.seg button {
+  flex: 1; padding: 7px; border: 0; border-radius: 8px;
+  background: none; color: var(--muted); cursor: pointer;
+}
+.seg button.on { background: var(--bg); color: var(--ink); }
 button, .file {
   font: inherit; color: inherit; padding: 8px 12px; border-radius: 10px;
   background: var(--tile); border: 2px solid transparent; cursor: pointer;
