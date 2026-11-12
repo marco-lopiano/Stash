@@ -1,13 +1,21 @@
 @echo off
-title Launching Vite Project
+cd /d "%~dp0"
 
-echo Checking dependencies...
 if not exist "node_modules\" (
-    echo node_modules not found. Running npm install...
-    call npm install
+    echo Installing dependencies...
+    call npm install || goto :fail
 )
 
-echo Starting Vite development server...
-npm run dev
+if not exist "dist\index.html" (
+    echo Building...
+    call npm run build || goto :fail
+)
 
+start "" powershell -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "%~dp0tray.ps1"
+exit /b 0
+
+:fail
+echo.
+echo Something failed. See the messages above.
 pause
+exit /b 1
