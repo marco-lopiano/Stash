@@ -65,6 +65,11 @@ const normalize = (u) => /^[a-z][a-z0-9+.-]*:/i.test(u) ? u : 'https://' + u;
 function wireTile(el, it) {
   el._item = it;
   el.draggable = false;
+  if (it.note) {
+    const dot = document.createElement('span');
+    dot.className = 'note-dot'; dot.title = 'Has a note';
+    el.append(dot);
+  }
   if (drag && drag.it === it) el.classList.add('dragging');
   el.onpointerdown = (e) => startHold(e, el, it);
   el.oncontextmenu = (e) => {
@@ -194,6 +199,7 @@ function renderMenu() {
   const kids = [];
   if (menuMode === 'main') {
     kids.push(mkItem('Edit', { act: 'edit' }));
+    kids.push(mkItem('Notes', { act: 'notes' }));
     kids.push(mkItem(it.pinned ? 'Unpin' : 'Pin', { act: 'pin' }));
     if (moveTargets(it).length || it.parent != null) kids.push(mkItem('Move to…', { act: 'move' }));
     kids.push(mkItem('Delete', { act: 'delete' }, 'danger'));
@@ -243,6 +249,7 @@ menu.onclick = (e) => {
   if (group != null) moveInto(it, group);
   else if (act === 'home') moveInto(it, null);
   else if (act === 'edit') openDialog(it);
+  else if (act === 'notes') openNotes(it);
   else if (act === 'pin') { it.pinned = !it.pinned; save(); render(); }
   else if (act === 'delete') { removeSubtree(it); save(); render(); }
 };
@@ -312,6 +319,24 @@ $('form').onsubmit = () => {
   save(); render();
 };
 dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+
+// ---- Notes ----
+const noteDlg = $('notedlg'), noteArea = $('note'), noteTitle = $('note-title');
+let noteItem = null;
+function openNotes(it) {
+  noteItem = it;
+  noteTitle.textContent = it.name || (it.type === 'group' ? 'Group' : hostOf(it.url)) || 'Notes';
+  noteArea.value = it.note || '';
+  noteDlg.showModal();
+  noteArea.focus();
+}
+$('note-cancel').onclick = () => noteDlg.close();
+$('noteform').onsubmit = () => {
+  const v = noteArea.value.trim();
+  if (v) noteItem.note = v; else delete noteItem.note;
+  save(); render();
+};
+noteDlg.addEventListener('click', (e) => { if (e.target === noteDlg) noteDlg.close(); });
 
 // ---- Click and hold to drag ----
 const HOLD_MS = 250, MOVE_TOLERANCE = 6;

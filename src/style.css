@@ -69,6 +69,11 @@ header { display: flex; justify-content: flex-end; padding: 16px 28px 0; }
   background: linear-gradient(transparent, rgba(0,0,0,.55));
 }
 .tile.noimg .label { background: none; color: var(--ink); }
+.tile .note-dot {
+  position: absolute; top: 9px; right: 9px; z-index: 2;
+  width: 11px; height: 11px; border-radius: 50%;
+  background: var(--ink); box-shadow: 0 0 0 2px var(--bg);
+}
 
 .add {
   border: 2px dashed var(--tile); background: none; border-radius: 16px;
@@ -137,6 +142,12 @@ input[type=text], input:not([type]) {
   background: var(--tile); border: 2px solid transparent; border-radius: 10px;
 }
 input:focus { outline: none; border-color: var(--muted); }
+textarea {
+  width: 100%; padding: 10px 12px; font: inherit; color: inherit; resize: vertical;
+  background: var(--tile); border: 2px solid transparent; border-radius: 10px;
+}
+textarea:focus { outline: none; border-color: var(--muted); }
+#note-title { margin: 0; font-size: 16px; font-weight: 600; }
 .row { display: flex; gap: 8px; align-items: center; }
 .row.end { justify-content: flex-end; }
 .seg { display: flex; gap: 4px; padding: 4px; background: var(--tile); border-radius: 10px; }
