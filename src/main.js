@@ -39,6 +39,25 @@ zoom.value = localStorage.getItem(ZOOM) || 140;
 setCell(zoom.value);
 zoom.oninput = () => { setCell(zoom.value); localStorage.setItem(ZOOM, zoom.value); };
 
+// ---- Theme ----
+const THEME = 'linkgrid.theme';
+const settingsBtn = $('settings-btn'), settings = $('settings'), themeSeg = $('theme');
+function applyTheme(t) {
+  // 'system' = defer to prefers-color-scheme (no attribute); otherwise force it.
+  if (t === 'system') document.documentElement.removeAttribute('data-theme');
+  else document.documentElement.setAttribute('data-theme', t);
+  for (const b of themeSeg.children) b.classList.toggle('on', b.dataset.theme === t);
+}
+applyTheme(localStorage.getItem(THEME) || 'system');
+themeSeg.onclick = (e) => {
+  const t = e.target.dataset.theme; if (!t) return;
+  localStorage.setItem(THEME, t); applyTheme(t);
+};
+settingsBtn.onclick = () => { settings.hidden = !settings.hidden; };
+addEventListener('pointerdown', (e) => {
+  if (!settings.hidden && !settings.contains(e.target) && e.target !== settingsBtn) settings.hidden = true;
+});
+
 // ---- Rendering ----
 const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return u; } };
 const normalize = (u) => /^[a-z][a-z0-9+.-]*:/i.test(u) ? u : 'https://' + u;
@@ -230,7 +249,8 @@ menu.onclick = (e) => {
 addEventListener('pointerdown', (e) => { if (!menu.contains(e.target)) closeMenu(); });
 addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
-  if (!menu.hidden) closeMenu();
+  if (!settings.hidden) settings.hidden = true;
+  else if (!menu.hidden) closeMenu();
   else if (openGroupId != null && (dlg.open ? false : true)) closeFolder();
 });
 addEventListener('scroll', closeMenu, true);

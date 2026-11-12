@@ -10,6 +10,9 @@
 @media (prefers-color-scheme: dark) {
   :root { --bg: #151515; --tile: #242423; --ink: #ececea; --muted: #77776f; }
 }
+/* An explicit theme choice overrides the system preference above. */
+:root[data-theme="light"] { --bg: #f6f6f4; --tile: #e6e6e2; --ink: #1b1b1a; --muted: #85857f; color-scheme: light; }
+:root[data-theme="dark"]  { --bg: #151515; --tile: #242423; --ink: #ececea; --muted: #77776f; color-scheme: dark; }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 body {
@@ -17,7 +20,22 @@ body {
   font: 15px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 header { display: flex; justify-content: flex-end; padding: 16px 28px 0; }
+.controls { position: relative; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
 #zoom { width: 110px; accent-color: var(--muted); }
+#settings-btn {
+  width: 34px; height: 34px; display: grid; place-items: center; padding: 0;
+  border: 2px solid transparent; border-radius: 10px; background: var(--tile);
+  color: var(--muted); font-size: 17px; line-height: 1; cursor: pointer;
+}
+#settings-btn:hover, #settings-btn:focus-visible { color: var(--ink); outline: none; }
+#settings-btn:focus-visible { border-color: var(--muted); }
+#settings {
+  position: absolute; top: 100%; right: 0; z-index: 40; margin-top: 8px;
+  min-width: 190px; padding: 12px;
+  background: var(--bg); border: 1px solid var(--tile); border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+.settings-label { margin-bottom: 8px; font-size: 13px; font-weight: 600; color: var(--muted); }
 
 #pinned {
   display: flex; gap: var(--gap); overflow-x: auto;
