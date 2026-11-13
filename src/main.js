@@ -1,11 +1,21 @@
-const KEY = 'linkgrid.items', ZOOM = 'linkgrid.cell';
+import { loadState, saveItems, saveSetting, onStorageError } from './storage.js';
+
 const $ = (id) => document.getElementById(id);
 const grid = $('grid'), pinned = $('pinned'), dlg = $('dlg'), menu = $('menu'), zoom = $('zoom');
 const folder = $('folder'), folderGrid = $('folder-grid'), folderTitle = $('folder-title');
 
-let items = [];
-try { items = JSON.parse(localStorage.getItem(KEY)) || []; } catch {}
-const save = () => localStorage.setItem(KEY, JSON.stringify(items));
+// All data lives in a local SQLite database served by the Vite plugin in
+// server/api.js, so it survives reboots and browser data clean-ups.
+let state;
+try { state = await loadState(); }
+catch (e) {
+  document.body.innerHTML = '<p style="padding:2em;font:16px system-ui">Could not reach the Stash database. ' +
+    'Start the app with run.sh / run.bat (or <code>npm run dev</code>) and reload.</p>';
+  throw e;
+}
+let items = state.items;
+const save = () => saveItems(items);
+onStorageError((e) => { console.error(e); alert('Saving to the Stash database failed. Is the server still running?'); });
 
 // Each item needs a stable id and a type; migrate any legacy entries once.
 let _seq = 0;
@@ -35,12 +45,12 @@ function inSubtree(it, rootId) {
 
 // ---- Global icon size ----
 const setCell = (v) => document.documentElement.style.setProperty('--cell', v + 'px');
-zoom.value = localStorage.getItem(ZOOM) || 140;
+zoom.value = state.settings.cell || 140;
 setCell(zoom.value);
-zoom.oninput = () => { setCell(zoom.value); localStorage.setItem(ZOOM, zoom.value); };
+zoom.oninput = () => setCell(zoom.value);
+zoom.onchange = () => saveSetting('cell', zoom.value);
 
 // ---- Theme ----
-const THEME = 'linkgrid.theme';
 const settingsBtn = $('settings-btn'), settings = $('settings'), themeSeg = $('theme');
 function applyTheme(t) {
   // 'system' = defer to prefers-color-scheme (no attribute); otherwise force it.
@@ -48,10 +58,10 @@ function applyTheme(t) {
   else document.documentElement.setAttribute('data-theme', t);
   for (const b of themeSeg.children) b.classList.toggle('on', b.dataset.theme === t);
 }
-applyTheme(localStorage.getItem(THEME) || 'system');
+applyTheme(state.settings.theme || 'system');
 themeSeg.onclick = (e) => {
   const t = e.target.dataset.theme; if (!t) return;
-  localStorage.setItem(THEME, t); applyTheme(t);
+  saveSetting('theme', t); applyTheme(t);
 };
 settingsBtn.onclick = () => { settings.hidden = !settings.hidden; };
 addEventListener('pointerdown', (e) => {
