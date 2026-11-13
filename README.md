@@ -1,17 +1,6 @@
 # The Stash
 
-A small, self-hosted start page for your favourite links. Save sites as image tiles, organise them into groups, and keep everything in a local SQLite database that survives browser cache clean-ups and reboots.
-
-## Features
-
-- **Link tiles** with a custom image and name
-- **Groups** (folders), which can be nested
-- **Pin** items to a row at the top
-- **Notes** attached to any tile
-- **Drag and drop**: hold a tile to reorder it, or drop it onto a group to move it inside
-- **Right-click menu** to edit, add notes, pin, move or delete
-- Adjustable **icon size** and a **light, dark or system** theme
-- Data stored on disk in `data/stash.db`
+Stash your links easily and sleep better at night.
 
 ## Requirements
 
