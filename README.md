@@ -4,7 +4,7 @@ Stash your links easily and sleep better at night.
 
 ## Requirements
 
-- Node.js 22.5 or newer (uses the built-in `node:sqlite` module)
+- Node.js 22.5 or newer
 
 ## Getting started
 
@@ -13,6 +13,7 @@ Stash your links easily and sleep better at night.
 ```bash
 ./run.sh    # installs deps, builds if needed, starts the server in the background
 ./stop.sh   # stops it
+./update.sh # adds remote origin to this repo if not present and git pulls it
 ```
 
 **Windows**
@@ -20,6 +21,7 @@ Stash your links easily and sleep better at night.
 ```bat
 run.bat     :: installs deps, builds if needed, starts the server with a tray icon
 stop.bat    :: stops it
+update.bat  :: adds remote origin to this repo if not present and git pulls it
 ```
 
 Then open http://localhost:5173.
