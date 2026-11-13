@@ -1,6 +1,6 @@
 # The Stash
 
-Test - Stash your links easily and sleep better at night.
+Stash your links easily and sleep better at night.
 
 ## Requirements
 
