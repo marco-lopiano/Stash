@@ -11,17 +11,17 @@ Stash your links easily and sleep better at night.
 **macOS / Linux**
 
 ```bash
-./run.sh    # installs deps, builds if needed, starts the server in the background
-./stop.sh   # stops it
-./update.sh # adds remote origin to this repo if not present and git pulls it
+./run.sh      # installs deps, builds if needed, starts the server in the background
+./stop.sh     # stops it
+./update.sh   # adds remote origin to this repo if not present and git pulls it
 ```
 
 **Windows**
 
 ```bat
-run.bat     :: installs deps, builds if needed, starts the server with a tray icon
-stop.bat    :: stops it
-update.bat  :: adds remote origin to this repo if not present and git pulls it
+run.bat       :: installs deps, builds if needed, starts the server with a tray icon
+stop.bat      :: stops it
+update.bat    :: adds remote origin to this repo if not present and git pulls it
 ```
 
 Then open http://localhost:5173.
