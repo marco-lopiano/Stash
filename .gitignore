@@ -5,3 +5,5 @@ run.sh
 stop.sh
 *.log
 *.pid
+data
+.claude
